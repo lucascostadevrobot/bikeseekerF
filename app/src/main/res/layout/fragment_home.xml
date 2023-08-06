@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbarMapaFragmentMotorista"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activitys.ui.home.HomeFragment">
+
+
+    <Button
+        android:id="@+id/botao_aceitarCorrida"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/botao_personalizado_escuro"
+        android:onClick="aceitarCorrida"
+        android:text="@string/texto_botao_aceitar_corrida"
+        app:layout_constraintBottom_toBottomOf="@+id/include"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/include"
+        app:layout_constraintVertical_bias="0.774"
+        tools:ignore="MissingConstraints,UsingOnClickInXml" />
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/include"
+        layout="@layout/content_passageiro" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

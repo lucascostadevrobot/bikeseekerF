@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners
+        android:radius="100dp"
+        android:color="@color/cor_backgroud_secundario"
+        />
+
+    <stroke
+        android:width="2dp"
+        android:color="@color/cor_backgroud_secundario"
+        />
+
+    <gradient
+        android:startColor="@color/cor_backgroud_secundario"
+        android:centerColor="@color/cor_backgroud_secundario"
+        android:endColor="@color/cor_backgroud_secundario"/>
+</shape>

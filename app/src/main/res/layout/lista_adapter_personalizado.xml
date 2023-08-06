@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_personalizada_requisicoes_adapter"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
+    
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="6dp"
+            tools:ignore="UselessParent">
+
+        <ImageView
+            android:id="@+id/icon_list_requisicoes_personalizado"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            app:srcCompat="@drawable/icon_usuario_maps"
+            android:contentDescription="TODO"
+            tools:ignore="ContentDescription" />
+        
+        <LinearLayout
+            android:id="@+id/LinearLayoutListAdapter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@+id/icon_list_requisicoes_personalizado"
+            android:orientation="vertical"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@+id/icon_list_requisicoes_personalizado">
+
+        <TextView
+            android:id="@+id/texto_listrequisicoes_nome_passageiro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:text="Lucas da Costa"
+            android:textColor="@android:color/black"
+            android:textSize="24dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/texto_listrequisicoes_distancia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0 km - aproximadamente"
+            android:textSize="18sp"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

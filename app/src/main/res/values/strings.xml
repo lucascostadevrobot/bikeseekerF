@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">BikerSeeker</string>
+    <string name="title_activity_maps">MapsActivity</string>
+
+    <!--Strings da tela de Cadastro e Login-->
+    <string name="app_telaCadastro">Cadastro</string>
+    <string name="app_telaLogin">Login</string>
+
+
+    <!--Criando Strings da tela de Login-->
+    <string name="logooficial">LogoOficial</string>
+    <string name="text_tela_inicial">Seu aplicativo para corrida de outro universo! Chamou, chegou!</string>
+    <string name="logo_oficial">Logo Oficial</string>
+    <string name="texto_vamos_comecar">Hey! Bem vindos, vamos começar?</string>
+    <string name="hint_nome_completo">Nome Completo</string>
+    <string name="hint_digite_seu_email">Digite seu melhor e-mail</string>
+    <string name="hint_digite_sua_senha_cadastro">Escolha uma senha</string>
+
+    <!--Criando Strings da tela de Cadastro-->
+    <string name="tipo_motorista_cadastro">Motorista</string>
+    <string name="tipo_passageiro_cadastro">Passageiro</string>
+    <string name="button_cadastrar_conta">Cadastrar conta</string>
+    <string name="imagem_tela_cadastro">Imagem Incial Cadastro</string>
+    <string name="botao_tela_cadastro">Cadastrar nova conta</string>
+
+    <!--Criando Strings da Tela Passageiro Activity-->
+    <string name="title_activity_passageiro">PassageiroActivity</string>
+    <!--string name="hello_first_fragment">Hello first fragment</string-->
+    <!--string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string-->
+    <string name="meu_local">Meu Local</string>
+    <string name="para_onde_vamos">Para onde vamos?</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <!--Criando Strings da Tela Motorista Aceitação de Corridas Activity-->
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_corrida">CorridaActivity</string>
+    <string name="texto_botao_aceitar_corrida">Aceitar corrida</string>
+    <string name="title_activity_testcorrida">TESTCORRIDA</string>
+
+    <string name="title_home">Mapa</string>
+    <string name="title_dashboard">Histórico</string>
+    <string name="title_notifications">Perfil</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="previous">Previous</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+
+
+</resources>

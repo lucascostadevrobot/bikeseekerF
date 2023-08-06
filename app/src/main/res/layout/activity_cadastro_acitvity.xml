@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cor_backgroud_secundario"
+    tools:context=".view.activitys.CadastroAcitvity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="320dp"
+        android:layout_height="288dp"
+        android:background="@drawable/linear_layout_circular"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            app:boxStrokeColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:startIconDrawable="@drawable/ic_baseline_account_box_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editCadastroNome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_nome_completo"
+                android:inputType="text"
+                android:textColorHint="#546E7A"
+                tools:ignore="TextContrastCheck" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="17dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:startIconDrawable="@drawable/ic_baseline_email_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editCadastroEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_digite_seu_email"
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="#546E7A"
+                    tools:ignore="TextContrastCheck" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="86dp"
+                    android:layout_marginTop="18dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:startIconDrawable="@drawable/ic_baseline_lock_24">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editCadastroSenha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_digite_sua_senha_cadastro"
+                        android:inputType="textPassword"
+                        android:textColorHint="#546E7A"
+                        tools:ignore="TextContrastCheck" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+
+    <Switch
+        android:id="@+id/editSwitchTipoUsuario"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:background="#FFFFFF"
+        android:outlineAmbientShadowColor="@color/cor_background_primaria"
+        android:shadowColor="#FFFFFF"
+        android:textColorLink="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        tools:ignore="UseSwitchCompatOrMaterialXml"
+        tools:targetApi="p" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="157dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginBottom="423dp"
+        android:contentDescription="@string/imagem_tela_cadastro"
+        app:layout_constraintBottom_toTopOf="@+id/botaoCadastroUsuario"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logooficialheyvamosla" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="@string/tipo_motorista_cadastro"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editSwitchTipoUsuario"
+        app:layout_constraintStart_toEndOf="@+id/editSwitchTipoUsuario" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="76dp"
+        android:text="@string/tipo_passageiro_cadastro"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editSwitchTipoUsuario"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/botaoCadastroUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
+        android:onClick="validarCadastroUsuario"
+        android:text="Cadastar nova conta"
+        android:textColor="#283593"
+        app:backgroundTint="#B3A9A9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

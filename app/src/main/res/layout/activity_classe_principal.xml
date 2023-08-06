@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F8F8"
+    tools:context=".view.activitys.ClassePrincipal">
+
+    <ImageView
+        android:id="@+id/logooficial"
+        android:layout_width="213dp"
+        android:layout_height="219dp"
+        android:layout_marginStart="20dp"
+        android:contentDescription="@string/logo_oficial"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.275"
+        app:srcCompat="@drawable/logooficialinicial" />
+
+    <TextView
+        android:id="@+id/slogan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="360dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="33dp"
+        android:text="@string/text_tela_inicial"
+        android:textAlignment="viewStart"
+        android:textColor="#000000"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:autoSizeMaxTextSize="50dp"
+        app:autoSizeMinTextSize="1dp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="67dp"
+        android:layout_marginBottom="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/slogan"
+        tools:ignore="MissingConstraints">
+
+        <Button
+            android:id="@+id/botao_cadastrar"
+            android:layout_width="159dp"
+            android:layout_height="57dp"
+            android:layout_margin="5dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="55dp"
+            android:layout_weight="1"
+            android:background="@drawable/botao_persoalizado_inicial"
+            android:onClick="abrirTelaCadastro"
+            android:text="Criar conta"
+            android:textColor="@color/black"
+            app:cornerRadius="28dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/botao_login"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/slogan"
+            app:layout_constraintVertical_bias="0.534" />
+
+        <Button
+            android:id="@+id/botao_login"
+            android:layout_width="159dp"
+            android:layout_height="57dp"
+            android:layout_margin="5dp"
+            android:layout_marginTop="55dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="55dp"
+            android:layout_weight="1"
+            android:background="@drawable/botao_persoalizado_inicial"
+            android:onClick="abrirTelaLogin"
+            android:text="Fazer login"
+            android:textColor="@color/black"
+            app:cornerRadius="28dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/slogan"
+            app:layout_constraintVertical_bias="0.534" />
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activitys.PassageiroActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.BikerSeeker.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/Theme.BikerSeeker.PopupOverlay" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/content_passageiro" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutDestino"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="55dp"
+        android:background="@color/cor_backgroud_secundario"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <EditText
+            android:id="@+id/editTextMeuLocal"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:autofillHints=""
+            android:background="@color/cor_background_primaria"
+            android:drawableLeft="@drawable/ic_baseline_add_location_24"
+            android:drawablePadding="6dp"
+            android:ems="10"
+            android:enabled="false"
+            android:hint="@string/meu_local"
+            android:inputType="textPersonName"
+            android:radius="200dp"
+            android:textColor="@color/cor_backgroud_secundario"
+            android:textColorHint="@color/cor_backgroud_secundario"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editTextMeuDestino"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:autofillHints=""
+            android:background="@color/cor_background_primaria"
+            android:drawableLeft="@drawable/ic_baseline_edit_location_24"
+            android:drawablePadding="6dp"
+            android:ems="10"
+            android:hint="@string/para_onde_vamos"
+            android:inputType="textPersonName"
+            android:radius="200dp"
+            android:textColor="@color/cor_backgroud_secundario"
+            android:textColorHint="@color/cor_backgroud_secundario"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/botao_chamarmotoboy"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="68dp"
+        android:layout_marginTop="655dp"
+        android:background="@drawable/botao_personalizado_escuro"
+        android:onClick="chamarBikeSeeker"
+        android:text="Chamar um bike-seeke" />
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
