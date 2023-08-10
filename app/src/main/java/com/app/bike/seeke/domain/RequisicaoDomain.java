@@ -59,7 +59,7 @@ public class RequisicaoDomain {
         DatabaseReference requisicao = requisicoes.child(getId());
 
         //Parte que realiza a atualização na requisicao direto no banco de dados, através do requisicoes e requisicao
-        Map objeto = new HashMap();
+        Map<String, Object> objeto = new HashMap<String, Object>();
         objeto.put("motorista", getMotorista());
         objeto.put("status", getStatus());
 
