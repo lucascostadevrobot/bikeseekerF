@@ -48,5 +48,7 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
 
+    <string name="texto_historico_finalizado">Situação:</string>
+
 
 </resources>

@@ -1,5 +1,6 @@
 package com.app.bike.seeke.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.bike.seeke.R;
+import com.app.bike.seeke.domain.DestinoDomain;
 import com.app.bike.seeke.domain.RequisicaoDomain;
+import com.app.bike.seeke.domain.UsuarioDomain;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -36,8 +41,15 @@ public class HistoricoAdapterMotorista extends RecyclerView.Adapter {
 
         ViewHolderClass viewHolderClass = (ViewHolderClass) holder;
         RequisicaoDomain requisicaoDomain = listHistoricoMotociclista.get(position);
-        viewHolderClass.textNomeMoto.setText((CharSequence) requisicaoDomain.getMotorista());
-        viewHolderClass.textCidade.setText(requisicaoDomain.getDestinoDomain().toString());
+        UsuarioDomain passageiro = requisicaoDomain.getPassageiro();
+        DestinoDomain destinoDomain = requisicaoDomain.getDestinoDomain();
+
+
+
+        viewHolderClass.textNomeMoto.setText(passageiro.getNome());
+        viewHolderClass.textCidade.setText(destinoDomain.getCidade());
+        viewHolderClass.txtStatusDaCorrida.setText(requisicaoDomain.getStatus());
+
         //Falta passar a data na requisicao viewHolderClass.textData.setText(requisicaoDomain.);
     }
 
@@ -50,6 +62,7 @@ public class HistoricoAdapterMotorista extends RecyclerView.Adapter {
         TextView textNomeMoto;
         TextView textCidade;
         TextView textData;
+        TextView txtStatusDaCorrida;
 
 
         public ViewHolderClass(@NonNull View itemView) {
@@ -57,6 +70,7 @@ public class HistoricoAdapterMotorista extends RecyclerView.Adapter {
             textNomeMoto = itemView.findViewById(R.id.texto_listrequisicoes_nome_passageiro);
             textCidade = itemView.findViewById(R.id.texto_localizacao_corrida);
             textData = itemView.findViewById(R.id.texto_data_corrida);
+            txtStatusDaCorrida = itemView.findViewById(R.id.texto_stutus_corrida);
         }
     }
 }
