@@ -34,7 +34,7 @@
             android:paddingRight="14dp"
             app:srcCompat="@drawable/icon_usuario_maps"
             android:contentDescription="TODO"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription,HardcodedText" />
         
         <LinearLayout
             android:id="@+id/LinearLayoutListAdapter"
@@ -46,24 +46,27 @@
             android:layout_toEndOf="@+id/icon_list_requisicoes_personalizado"
             android:orientation="vertical"
             android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@+id/icon_list_requisicoes_personalizado">
+            android:layout_toRightOf="@+id/icon_list_requisicoes_personalizado"
+            tools:ignore="RtlHardcoded">
 
-        <TextView
-            android:id="@+id/texto_listrequisicoes_nome_passageiro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:text="Lucas da Costa"
-            android:textColor="@android:color/black"
-            android:textSize="24dp"
-            android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/texto_listrequisicoes_nome_passageiro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:text="Lucas da Costa"
+                android:textColor="@android:color/black"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText,SpUsage,TextSizeCheck" />
 
         <TextView
             android:id="@+id/texto_listrequisicoes_distancia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="0 km - aproximadamente"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            tools:ignore="HardcodedText" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

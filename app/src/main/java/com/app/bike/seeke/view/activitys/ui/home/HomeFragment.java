@@ -175,7 +175,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  View.
                 double longitude = location.getLongitude();
                 localMotorista = new LatLng(latitude, longitude);
                 //mMap.clear();
+                /*
                 mMap.getUiSettings().setZoomControlsEnabled(true);
+                 Essa função  não será utilizada, ButtonNavigation está sobrepondo
+                 */
 
             }
 
@@ -214,9 +217,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  View.
                     0,
                     locationListener
             );
-
-
-            return;
         }
     }
 
@@ -253,7 +253,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  View.
                         break;
                 }
             }
-
+  
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
