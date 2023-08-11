@@ -39,8 +39,8 @@
     <string name="title_activity_testcorrida">TESTCORRIDA</string>
 
     <string name="title_home">Mapa</string>
-    <string name="title_dashboard">Histórico</string>
-    <string name="title_notifications">Perfil</string>
+    <string name="title_dashboard">Histórico de corridas</string>
+    <string name="title_notifications">Meu Perfil</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="previous">Previous</string>
     <!-- Strings used for fragments for navigation -->

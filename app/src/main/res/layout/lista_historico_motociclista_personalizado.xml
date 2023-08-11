@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
-    android:layout_marginTop="20dp"
+
     android:layout_marginRight="10dp"
     android:animateLayoutChanges="true"
     app:cardCornerRadius="8dp"
@@ -86,6 +86,23 @@
                     android:text="Situação: Finalizado"
                     tools:ignore="HardcodedText" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="290dp"
+                android:layout_marginRight="30dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="78dp"
+                    android:layout_marginEnd="1dp"
+                    app:srcCompat="@drawable/baseline_price_check_24" />
+            </LinearLayout>
+
+
         </RelativeLayout>
     </LinearLayout>
 

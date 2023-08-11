@@ -49,7 +49,6 @@ public class HistoricoAdapterMotorista extends RecyclerView.Adapter {
         viewHolderClass.textNomeMoto.setText(passageiro.getNome());
         viewHolderClass.textCidade.setText(destinoDomain.getCidade());
         viewHolderClass.txtStatusDaCorrida.setText(requisicaoDomain.getStatus());
-
         //Falta passar a data na requisicao viewHolderClass.textData.setText(requisicaoDomain.);
     }
 

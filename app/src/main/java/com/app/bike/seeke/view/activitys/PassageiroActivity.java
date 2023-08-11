@@ -288,6 +288,7 @@ public class PassageiroActivity extends AppCompatActivity implements OnMapReadyC
             List<Address> listaDeEnderecos = geocoder.getFromLocationName(endereco, 100);
             if (listaDeEnderecos != null && listaDeEnderecos.size() > 0) {
                 Address address = listaDeEnderecos.get(0);
+                String subAdminArea = address.getSubAdminArea();
 
                 return address;
             }
