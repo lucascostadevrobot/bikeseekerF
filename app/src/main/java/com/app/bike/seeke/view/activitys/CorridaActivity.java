@@ -3,6 +3,9 @@ package com.app.bike.seeke.view.activitys;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -11,10 +14,12 @@ import com.app.bike.seeke.databinding.ActivityCorridaBinding;
 import com.app.bike.seeke.databinding.FragmentHomeBinding;
 import com.app.bike.seeke.domain.RequisicaoDomain;
 import com.app.bike.seeke.domain.UsuarioDomain;
+import com.app.bike.seeke.repository.ConfiguracaoFirebase;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,6 +50,9 @@ public class CorridaActivity extends AppCompatActivity {
 
     private Button botaoAceitarCorridaStatus;
 
+    private FirebaseAuth autenticacao;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,5 +73,10 @@ public class CorridaActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_corrida);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+    }
+
+    //Metodo para criação do nosso menu global com a opção de Sair
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu) ;
     }
 }

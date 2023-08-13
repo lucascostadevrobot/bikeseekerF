@@ -1,6 +1,8 @@
 package com.app.bike.seeke.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,4 +74,40 @@ public class HistoricoAdapterMotorista extends RecyclerView.Adapter {
             txtStatusDaCorrida = itemView.findViewById(R.id.texto_stutus_corrida);
         }
     }
+
+    /*public void filtroCardHistoricoMotorista() {
+
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(requireContext());
+        alertBuilder.setTitle("Escolha o que fazer");
+        alertBuilder.setMessage("Essa requisição do histórico ainda não foi aceita. O seu passageiro está te esperando. Deseja aceitar?");
+        alertBuilder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                aceitarCorrida();
+
+            }
+        });
+
+        alertBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Ação a ser executada quando o botão "Cancelar" for pressionado
+                // Geralmente, não é necessário fazer nada aqui, já que é apenas um cancelamento
+            }
+        });
+        alertBuilder.show();
+    }
+
+    //Metodo responsável quando o Motorista clicar no Botão de aceitar corrida
+    public void aceitarCorrida() {
+        requisicaoDomain = new RequisicaoDomain();
+        requisicaoDomain.setId(idRequisicao);
+        requisicaoDomain.setMotorista(motorista);
+        requisicaoDomain.setStatus(RequisicaoDomain.STATUS_A_CAMINHO);
+
+        requisicaoDomain.atualizarRequisicao();
+
+
+    }*/
 }
