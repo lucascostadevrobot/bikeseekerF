@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView1"
+        android:id="@+id/informacaoUsuario"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -26,7 +26,8 @@
             android:id="@+id/imageView4"
             android:layout_width="100dp"
             android:layout_height="150dp"
-            app:srcCompat="@drawable/perfil" />
+            app:srcCompat="@drawable/perfil"
+            tools:ignore="ContentDescription,ImageContrastCheck" />
 
 
         <TextView
@@ -35,10 +36,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
             android:layout_marginTop="50dp"
-            android:textStyle="bold"
             android:text="E-mail: "
             android:textSize="18dp"
-            tools:ignore="HardcodedText" />
+            android:textStyle="bold"
+            tools:ignore="HardcodedText,SpUsage,TextSizeCheck" />
 
         <TextView
             android:id="@+id/emailMotoristaPerfil"
@@ -47,24 +48,28 @@
             android:layout_marginLeft="160dp"
             android:layout_marginTop="50dp"
             android:text="lucascouto@gmail.com"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            tools:ignore="HardcodedText,RtlHardcoded,SpUsage,TextSizeCheck" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="75dp"
-            android:textStyle="bold"
             android:text="Eu sou:"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText,RtlHardcoded,SpUsage,TextSizeCheck" />
 
         <TextView
+            android:id="@+id/idTextoTipoUsuario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="160dp"
             android:layout_marginTop="75dp"
             android:text="Um motorista"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            tools:ignore="HardcodedText,RtlHardcoded,SpUsage,TextSizeCheck" />
 
         <ImageView
             android:id="@+id/imageView6"
@@ -72,16 +77,18 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="100dp"
-            app:srcCompat="@drawable/baseline_logout_24" />
+            app:srcCompat="@drawable/baseline_logout_24"
+            tools:ignore="ContentDescription,RtlHardcoded" />
 
         <TextView
-            android:id="@+id/button2"
+            android:id="@+id/idOpcaoSairDoAppMotorista"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
             android:layout_marginLeft="130dp"
             android:layout_marginTop="100dp"
-            android:text="Sair do aplicativo" />
+            android:text="Sair do aplicativo"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText,RtlHardcoded" />
 
 
     </androidx.cardview.widget.CardView>
@@ -90,7 +97,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
 
         android:layout_marginTop="300dp"
@@ -111,24 +118,28 @@
             android:layout_height="50dp"
             android:layout_marginTop="18dp"
             android:layout_marginRight="290dp"
-            app:srcCompat="@drawable/icon_help_desk" />
+            app:srcCompat="@drawable/icon_help_desk"
+            tools:ignore="ContentDescription,RtlHardcoded" />
 
         <TextView
+            android:id="@+id/idTextoInformacaoSuporte"
             android:layout_width="304dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="70dp"
             android:padding="15dp"
             android:paddingLeft="50dp"
-            android:text="Está passando por dificuldade na utilização do aplicativo? Se os serviços estiverem instáveis pedimos que entrem em contato."
-            android:textColor="#040303" />
+            android:text="@string/texto_mesangem_suporte_motorista"
+            android:textColor="#040303"
+            tools:ignore="RtlHardcoded,RtlSymmetry,TextSizeCheck" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/idBtnEnviarEmailMotoristaSuporte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="80dp"
             android:layout_marginTop="80dp"
-            android:text="Enviar e-mail" />
+            android:text="Enviar e-mail"
+            tools:ignore="RtlHardcoded" />
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

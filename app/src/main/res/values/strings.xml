@@ -49,6 +49,7 @@
     <string name="next">Next</string>
 
     <string name="texto_historico_finalizado">Situação:</string>
+    <string name="texto_mesangem_suporte_motorista">Está passando por dificuldade na utilização do aplicativo? Se os serviços estiverem instáveis pedimos que entrem em contato.</string>
 
 
 </resources>
