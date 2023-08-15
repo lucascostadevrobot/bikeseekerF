@@ -61,6 +61,8 @@ public class CorridaActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
+
+
         //Metodos para navegação no menu BottomNavigation
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
