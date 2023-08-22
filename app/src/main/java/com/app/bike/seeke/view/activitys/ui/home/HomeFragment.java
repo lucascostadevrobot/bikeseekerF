@@ -128,9 +128,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  View.
             }
             //Recuperando os dados dos usuários passageiros na lista de requisicoes
             //Esse if é necessário para alterarmos e trabalharmos com alteração do status da requisicao
-            if (getActivity().getIntent().getExtras().containsKey("idRequisicao")
-            && getActivity().getIntent().getExtras().containsKey("motorista")){
-                Bundle extras = getActivity().getIntent().getExtras();
+            if (requireActivity().getIntent().getExtras().containsKey("idRequisicao")
+            && requireActivity().getIntent().getExtras().containsKey("motorista")){
+                Bundle extras = requireActivity().getIntent().getExtras();
                 motorista =  (UsuarioDomain) extras.getSerializable("motorista");
                 idRequisicao = extras.getString("idRequisicao");
                 verificaStatusRequisicaoUi();
