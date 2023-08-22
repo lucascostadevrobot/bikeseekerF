@@ -1,9 +1,11 @@
 package com.app.bike.seeke.view.activitys.ui.notifications;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,12 +14,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.app.bike.seeke.R;
 import com.app.bike.seeke.adapter.HistoricoAdapterMotorista;
 import com.app.bike.seeke.adapter.PerfilMotoristaAdapter;
 import com.app.bike.seeke.databinding.FragmentNotificationsBinding;
 import com.app.bike.seeke.domain.RequisicaoDomain;
 import com.app.bike.seeke.domain.UsuarioDomain;
 import com.app.bike.seeke.repository.ConfiguracaoFirebase;
+import com.app.bike.seeke.view.activitys.RequisicoesActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

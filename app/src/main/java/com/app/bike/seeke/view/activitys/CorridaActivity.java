@@ -1,5 +1,6 @@
 package com.app.bike.seeke.view.activitys;
 
+import android.annotation.SuppressLint;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -42,7 +43,7 @@ public class CorridaActivity extends AppCompatActivity {
 
     private UsuarioDomain motorista;
 
-    private  String idRequisicao;
+    private String idRequisicao;
 
     private RequisicaoDomain requisicaoDomain;
 
@@ -75,10 +76,5 @@ public class CorridaActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_corrida);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-    }
-
-    //Metodo para criação do nosso menu global com a opção de Sair
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu) ;
     }
 }
