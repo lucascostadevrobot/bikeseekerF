@@ -133,13 +133,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 && requireActivity().getIntent().getExtras().containsKey("motorista")) {
             Bundle extras = requireActivity().getIntent().getExtras();
             motorista = (UsuarioDomain) extras.getSerializable("motorista");
-            localMotorista = new LatLng( //ALTEREI AQUI POIS O POSITION DO MARCADOR MOTORISTA ESTA DANDO ERRO LATLONG NAO PODE SER NULO
-                    Double.parseDouble(motorista.getLatitude()),
-                    Double.parseDouble(motorista.getLongitude())
+            if (motorista != null && motorista.getLatitude() != null && motorista.getLongitude() != null) {
+
+                localMotorista = new LatLng( //ALTEREI AQUI POIS O POSITION DO MARCADOR MOTORISTA ESTA DANDO ERRO LATLONG NAO PODE SER NULO
+                        Double.parseDouble(motorista.getLatitude()),
+                        Double.parseDouble(motorista.getLongitude())
                 );
-            idRequisicao = extras.getString("idRequisicao");
-            requisicaoAtiva = extras.getBoolean("requisicaoAtiva");
-            verificaStatusRequisicaoUi();
+                idRequisicao = extras.getString("idRequisicao");
+                requisicaoAtiva = extras.getBoolean("requisicaoAtiva");
+                verificaStatusRequisicaoUi();
+            }
         }
 
         supportMapFragment.getMapAsync(this);
@@ -283,19 +286,28 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 
     //Vai alterar o botão aceitar corrida
     private void requisicaoAguardando() {
-        botaoAceitarCorridaStatus.setText("Aceitar corrida");
+        if (mMap != null) {
+            botaoAceitarCorridaStatus.setText("Aceitar corrida");
+            //Exibe o marcador do motorista
+            adicionarMarcadorMotorista(localMotorista, motorista.getNome());
+            mMap.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(localMotorista, 14)
+            );
+        }
     }
 
     private void requisicaoACaminho() {
-        botaoAceitarCorridaStatus.setText("A caminho do passageiro");
+        if (mMap != null) {
+            botaoAceitarCorridaStatus.setText("A caminho do passageiro");
 
-        //Exibe o marcador do motorista
-        adicionarMarcadorMotorista(localMotorista, motorista.getNome());
-        //Exibe o marcador do passageiro
-        adicionarMarcadorPassageiro(localPassageiro, passageiro.getNome());
-        //Centraliza os marcados do passageiro e motorista
-        centralizaDoisMarcadores(marcadorMotorista, marcadorPassageiro);
+            //Exibe o marcador do motorista
+            adicionarMarcadorMotorista(localMotorista, motorista.getNome());
+            //Exibe o marcador do passageiro
+            adicionarMarcadorPassageiro(localPassageiro, passageiro.getNome());
+            //Centraliza os marcados do passageiro e motorista
+            centralizaDoisMarcadores(marcadorMotorista, marcadorPassageiro);
 
+        }
     }
 
     /**

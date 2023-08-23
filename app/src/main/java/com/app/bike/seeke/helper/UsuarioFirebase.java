@@ -1,15 +1,21 @@
 package com.app.bike.seeke.helper;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.app.bike.seeke.R;
 import com.app.bike.seeke.domain.UsuarioDomain;
 import com.app.bike.seeke.repository.ConfiguracaoFirebase;
 import com.app.bike.seeke.view.activitys.PassageiroActivity;
 import com.app.bike.seeke.view.activitys.RequisicoesActivity;
+import com.app.bike.seeke.view.activitys.ui.home.HomeFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -83,11 +89,6 @@ public class UsuarioFirebase {
                     String tipoUsuario = usuarioDomain != null ? usuarioDomain.getTipo() : null; //Recuperando o tipo do usuario
                     if (tipoUsuario != null && tipoUsuario.equals("M")){
                         // Se for um motorista, inicie o fragmento HomeFragment
-                        /**
-                         * Aqui será necessário redirecionar o mototaxista para o fragment CorridaAcitivity.
-                         * Pois, uma vez que o mesmo aceite a corrida, ao fechar o app e voltar o mesmo é redirecionado
-                         * para tela de RequisicoesActivity, mas como não existe requisicoes aguardando o app fecha
-                         * */
                         Intent intent = new Intent(activity, RequisicoesActivity.class);
                         activity.startActivity(intent);
                     }else {
