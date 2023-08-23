@@ -55,7 +55,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Objects;
 
 
-public class HomeFragment extends Fragment implements OnMapReadyCallback,  View.OnClickListener{
+public class HomeFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
 
     private FragmentHomeBinding binding;
     private GoogleMap mMap;
@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  View.
     private UsuarioDomain motorista;
     private UsuarioDomain passageiro;
 
-    private  String idRequisicao;
+    private String idRequisicao;
 
     private RequisicaoDomain requisicaoDomain;
 
@@ -81,7 +81,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  View.
     private Marker marcadorPassageiro;
 
     private FirebaseAuth autenticacao;
-
+    private String satusRequisicao;
+    private boolean requisicaoAtiva;
 
 
     //Construtor vazio
@@ -91,18 +92,18 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  View.
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        supportMapFragment= (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
         botaoAceitarCorridaStatus = (Button) view.findViewById(R.id.botao_aceitarCorrida);
         botaoAceitarCorridaStatus.setOnClickListener(this);
         //botaoAceitarCorridaStatus = requireActivity().findViewById(R.id.botao_aceitarCorrida);
 
         //Verifica se o MapaSuporteManager esta vazio
-            if (supportMapFragment == null){
-                FragmentManager fragmentManager =  getChildFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                supportMapFragment = SupportMapFragment.newInstance();
-                fragmentTransaction.replace(R.id.map, supportMapFragment).commit();
+        if (supportMapFragment == null) {
+            FragmentManager fragmentManager = getChildFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            supportMapFragment = SupportMapFragment.newInstance();
+            fragmentTransaction.replace(R.id.map, supportMapFragment).commit();
 
 
                 /*MapsInitializer.initialize(getContext(), MapsInitializer.Renderer.LATEST, new OnMapsSdkInitializedCallback() {
@@ -112,33 +113,38 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  View.
                     }
                 });*/
 
-                //Instanciando Objetos para Back Botton Fragment
-                Toolbar toolbar = view.findViewById(R.id.toolbarMapaFragmentMotorista);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    toolbar.setNavigationIcon(R.drawable.baseline_keyboard_backspace_24);
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            getActivity().onBackPressed();
-                        }
-                    });
-                }
+            //Instanciando Objetos para Back Botton Fragment
+            Toolbar toolbar = view.findViewById(R.id.toolbarMapaFragmentMotorista);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                toolbar.setNavigationIcon(R.drawable.baseline_keyboard_backspace_24);
             }
-            //Recuperando os dados dos usuários passageiros na lista de requisicoes
-            //Esse if é necessário para alterarmos e trabalharmos com alteração do status da requisicao
-            if (requireActivity().getIntent().getExtras().containsKey("idRequisicao")
-            && requireActivity().getIntent().getExtras().containsKey("motorista")){
-                Bundle extras = requireActivity().getIntent().getExtras();
-                motorista =  (UsuarioDomain) extras.getSerializable("motorista");
-                idRequisicao = extras.getString("idRequisicao");
-                verificaStatusRequisicaoUi();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getActivity().onBackPressed();
+                    }
+                });
             }
+        }
+        //Recuperando os dados dos usuários passageiros na lista de requisicoes
+        //Esse if é necessário para alterarmos e trabalharmos com alteração do status da requisicao
+        if (requireActivity().getIntent().getExtras().containsKey("idRequisicao")
+                && requireActivity().getIntent().getExtras().containsKey("motorista")) {
+            Bundle extras = requireActivity().getIntent().getExtras();
+            motorista = (UsuarioDomain) extras.getSerializable("motorista");
+            localMotorista = new LatLng( //ALTEREI AQUI POIS O POSITION DO MARCADOR MOTORISTA ESTA DANDO ERRO LATLONG NAO PODE SER NULO
+                    Double.parseDouble(motorista.getLatitude()),
+                    Double.parseDouble(motorista.getLongitude())
+                );
+            idRequisicao = extras.getString("idRequisicao");
+            requisicaoAtiva = extras.getBoolean("requisicaoAtiva");
+            verificaStatusRequisicaoUi();
+        }
 
         supportMapFragment.getMapAsync(this);
-            return view;
-        }
+        return view;
+    }
 
     //Metodo Principal do Mapa
     public void onMapReady(GoogleMap googleMap) {
@@ -186,6 +192,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  View.
                 mMap.getUiSettings().setZoomControlsEnabled(true);
                  Essa função  não será utilizada, ButtonNavigation está sobrepondo
                  */
+                alteraInterfaceSatusRequisicao(satusRequisicao);
+
 
             }
 
@@ -231,9 +239,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  View.
     /**
      * Esse metodo é responsável por sempre verificar os status da corrida na tela UI motorista
      * Assim é possível que a UI seja atualizada de acordo com as distancias percorridas
-     *
-     * */
-    private void verificaStatusRequisicaoUi(){
+     */
+    private void verificaStatusRequisicaoUi() {
         //Inicializa componente autenticação firebase e Database
         databaseReference = ConfiguracaoFirebase.getFirebaseDatabase();
         DatabaseReference requisicoesDataBaseRef = databaseReference.child("requisicoes")
@@ -242,37 +249,44 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  View.
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 requisicaoDomain = snapshot.getValue(RequisicaoDomain.class);
-                if (requisicaoDomain != null) {
+                if (requisicaoDomain != null) { //Alteração aqui erro ao voltar tela de requisicao
                     passageiro = requisicaoDomain.getPassageiro();
-                }
-                localPassageiro =  new LatLng(
-                        Double.parseDouble(passageiro.getLatitude()),
-                        Double.parseDouble(passageiro.getLongitude())
-                );
+                    localPassageiro = new LatLng(
+                            Double.parseDouble(passageiro.getLatitude()),
+                            Double.parseDouble(passageiro.getLongitude())
 
-                switch (Objects.requireNonNull(requisicaoDomain).getStatus()){
-                    case RequisicaoDomain.STATUS_AGUARDANDO:
-                        requisicaoAguardando();
-                    break;
-
-                    case RequisicaoDomain.STATUS_A_CAMINHO:
-                        requisicaoACaminho();
-                        break;
+                    );
+                    satusRequisicao = requisicaoDomain.getStatus();
+                    alteraInterfaceSatusRequisicao(satusRequisicao);
                 }
+
             }
-  
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
+
+    private void alteraInterfaceSatusRequisicao(String status){
+        switch (status) {
+            case RequisicaoDomain.STATUS_AGUARDANDO:
+                requisicaoAguardando();
+                break;
+
+            case RequisicaoDomain.STATUS_A_CAMINHO:
+                requisicaoACaminho();
+                break;
+        }
+    }
+
     //Vai alterar o botão aceitar corrida
-    private void requisicaoAguardando(){
+    private void requisicaoAguardando() {
         botaoAceitarCorridaStatus.setText("Aceitar corrida");
     }
 
-    private void requisicaoACaminho(){
+    private void requisicaoACaminho() {
         botaoAceitarCorridaStatus.setText("A caminho do passageiro");
 
         //Exibe o marcador do motorista
@@ -286,12 +300,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  View.
 
     /**
      * Bounds: Utiliza conceito de definição de limites
-     * */
-    private void centralizaDoisMarcadores(Marker marcador1, Marker marcador2){
+     */
+    private void centralizaDoisMarcadores(Marker marcador1, Marker marcador2) {
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(marcador1.getPosition() );
-        builder.include(marcador2.getPosition() );
+        builder.include(marcador1.getPosition());
+        builder.include(marcador2.getPosition());
 
         LatLngBounds bounds = builder.build();
 
@@ -300,12 +314,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  View.
         int espacoInterno = (int) (largura * 0.20);
 
         mMap.moveCamera(
-                CameraUpdateFactory.newLatLngBounds(bounds,largura, altura, espacoInterno)
+                CameraUpdateFactory.newLatLngBounds(bounds, largura, altura, espacoInterno)
         );
 
     }
 
-    private void adicionarMarcadorMotorista(LatLng localizacao, String titulo){
+    private void adicionarMarcadorMotorista(LatLng localizacao, String titulo) {
         if (marcadorMotorista != null)
             marcadorMotorista.remove();
         marcadorMotorista = mMap.addMarker(
@@ -316,7 +330,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  View.
         );
     }
 
-    private void adicionarMarcadorPassageiro(LatLng localizacao, String titulo){
+    private void adicionarMarcadorPassageiro(LatLng localizacao, String titulo) {
         if (marcadorPassageiro != null)
             marcadorPassageiro.remove();
         marcadorPassageiro = mMap.addMarker(
@@ -346,9 +360,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  View.
 
     //Metodos Ciclo de vida do Framgmento
     @Override
-    public  void onStart(){
+    public void onStart() {
         super.onStart();
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -376,4 +391,5 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,  View.
     public CreationExtras getDefaultViewModelCreationExtras() {
         return super.getDefaultViewModelCreationExtras();
     }
+
 }

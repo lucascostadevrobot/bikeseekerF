@@ -82,6 +82,12 @@ public class UsuarioFirebase {
                     UsuarioDomain usuarioDomain = snapshot.getValue(UsuarioDomain.class);
                     String tipoUsuario = usuarioDomain != null ? usuarioDomain.getTipo() : null; //Recuperando o tipo do usuario
                     if (tipoUsuario != null && tipoUsuario.equals("M")){
+                        // Se for um motorista, inicie o fragmento HomeFragment
+                        /**
+                         * Aqui será necessário redirecionar o mototaxista para o fragment CorridaAcitivity.
+                         * Pois, uma vez que o mesmo aceite a corrida, ao fechar o app e voltar o mesmo é redirecionado
+                         * para tela de RequisicoesActivity, mas como não existe requisicoes aguardando o app fecha
+                         * */
                         Intent intent = new Intent(activity, RequisicoesActivity.class);
                         activity.startActivity(intent);
                     }else {

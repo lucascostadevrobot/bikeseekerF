@@ -81,6 +81,7 @@ public class RequisicoesActivity extends AppCompatActivity {
         verificaStatusRequisicao();
     }
 
+
     private void verificaStatusRequisicao() {
         UsuarioDomain usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
         DatabaseReference firabaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
@@ -94,10 +95,10 @@ public class RequisicoesActivity extends AppCompatActivity {
         requisicoesPesquisas.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()) {
+                for (DataSnapshot ds : snapshot.getChildren()) { //ALTEREI AQUI TRATANDO  NULABILIDADE
                     RequisicaoDomain requisicaoDomain = ds.getValue(RequisicaoDomain.class);
-                    if (requisicaoDomain.getStatus().equals(RequisicaoDomain.STATUS_A_CAMINHO)
-                            || requisicaoDomain.getStatus().equals(RequisicaoDomain.STATUS_VIAGEM)) {
+                    if ((requisicaoDomain != null && requisicaoDomain.getStatus().equals(RequisicaoDomain.STATUS_A_CAMINHO))
+                            || (requisicaoDomain != null && requisicaoDomain.getStatus().equals(RequisicaoDomain.STATUS_VIAGEM))) {
                         abrirTelaCorrida(requisicaoDomain.getId(), motorista, true);
                     }
                 }
