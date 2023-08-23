@@ -6,6 +6,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.location.GnssAntennaInfo;
 import android.location.Location;
 import android.location.LocationListener;
@@ -33,7 +34,12 @@ import com.app.bike.seeke.R;
 import com.app.bike.seeke.databinding.FragmentHomeBinding;
 import com.app.bike.seeke.domain.RequisicaoDomain;
 import com.app.bike.seeke.domain.UsuarioDomain;
+import com.app.bike.seeke.helper.UsuarioFirebase;
 import com.app.bike.seeke.repository.ConfiguracaoFirebase;
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
@@ -41,6 +47,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.OnMapsSdkInitializedCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -195,6 +203,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 mMap.getUiSettings().setZoomControlsEnabled(true);
                  Essa função  não será utilizada, ButtonNavigation está sobrepondo
                  */
+                //Atualizar Geofire
+                UsuarioFirebase.atualizarDadosLocalizacao(latitude, longitude);
                 alteraInterfaceSatusRequisicao(satusRequisicao);
 
 
@@ -291,7 +301,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             //Exibe o marcador do motorista
             adicionarMarcadorMotorista(localMotorista, motorista.getNome());
             mMap.moveCamera(
-                    CameraUpdateFactory.newLatLngZoom(localMotorista, 14)
+                    CameraUpdateFactory.newLatLngZoom(localMotorista, 28)
             );
         }
     }
@@ -307,7 +317,66 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             //Centraliza os marcados do passageiro e motorista
             centralizaDoisMarcadores(marcadorMotorista, marcadorPassageiro);
 
+            //Inicia o monitoramento do motorista / passageiro
+            iniciarMonitoramentoCorrida(passageiro, motorista);
+
+
         }
+    }
+
+    private void iniciarMonitoramentoCorrida(UsuarioDomain p, UsuarioDomain m){
+        //Incializando geofire
+        //Define no local_usuario
+        DatabaseReference localUsuario = ConfiguracaoFirebase.getFirebaseDatabase()
+                .child("local_usuario");
+        GeoFire geoFire = new GeoFire(localUsuario);
+        //Adiciona circulo no passageiro
+        Circle circulo = mMap.addCircle(
+                new CircleOptions()
+                        .center(localPassageiro)
+                        .radius(300) //em metros
+                        .fillColor(Color.argb(72,0,40, 100))
+                        .strokeColor(Color.argb(5, 61,139, 0))
+        );
+
+        GeoQuery geoQuery = geoFire.queryAtLocation(
+                new GeoLocation(localPassageiro.latitude, localPassageiro.longitude),
+                0.08 //em km (0.05 80 metros, 0.8 equivale a 800 metros)
+        );
+        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+            @Override
+            public void onKeyEntered(String key, GeoLocation location) {
+                //Verificamos se o motorista entra dentro da area de 80 metros,para isso usamos o metodo onKeyEntered
+                //Para isso precisamos verificar se o Id do motorista está dentro da area. Sabemos que do Motorista já esta
+                if (key.equals(passageiro.getId())){
+
+                }else if (key.equals(motorista.getId())){
+
+                }
+
+            }
+            @Override
+            public void onKeyExited(String key) {
+
+            }
+
+            @Override
+            public void onKeyMoved(String key, GeoLocation location) {
+
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+
+            }
+
+            @Override
+            public void onGeoQueryError(DatabaseError error) {
+
+            }
+        });
+
+
     }
 
     /**

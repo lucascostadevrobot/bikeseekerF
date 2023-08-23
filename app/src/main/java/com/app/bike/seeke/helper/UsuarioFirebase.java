@@ -16,6 +16,8 @@ import com.app.bike.seeke.repository.ConfiguracaoFirebase;
 import com.app.bike.seeke.view.activitys.PassageiroActivity;
 import com.app.bike.seeke.view.activitys.RequisicoesActivity;
 import com.app.bike.seeke.view.activitys.ui.home.HomeFragment;
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,14 +30,14 @@ import com.google.firebase.database.ValueEventListener;
 
 public class UsuarioFirebase {
 
-    public static FirebaseUser getUsuarioAtual(){
+    public static FirebaseUser getUsuarioAtual() {
         FirebaseAuth usuario = ConfiguracaoFirebase.getFirebaseAutenticacao();
         return usuario.getCurrentUser();
     }
 
 
     //Metodo para recuperar os dados de quando o usuario estiver logado
-    public static UsuarioDomain getDadosUsuarioLogado(){
+    public static UsuarioDomain getDadosUsuarioLogado() {
         FirebaseUser firebaseUser = getUsuarioAtual();
         UsuarioDomain usuarioDomain = new UsuarioDomain();
         usuarioDomain.setId(firebaseUser.getUid());
@@ -45,7 +47,7 @@ public class UsuarioFirebase {
     }
 
 
-    public static boolean atualizaNomeUsuario(String nome){
+    public static boolean atualizaNomeUsuario(String nome) {
 
         try {
 
@@ -57,7 +59,7 @@ public class UsuarioFirebase {
             user.updateProfile(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    if (!task.isSuccessful()){
+                    if (!task.isSuccessful()) {
                         Log.d("Perfil", "Erro ao atualizar o seu nome de perfil");
                     }
 
@@ -66,7 +68,7 @@ public class UsuarioFirebase {
 
             return true;
 
-        }catch ( Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -75,23 +77,23 @@ public class UsuarioFirebase {
 
     //Toda vez que o metodo for chamado ele irá redirecionar o usuário para tela do seu tipo de usuário
     //Para isso precisamos realizar consulta em nosso banco de dados para saber se o usuário existe ou não ou se é Motorista ou Passageiro
-    public static void redirecionaUsuarioLogado(Activity activity){
-         FirebaseUser user = getUsuarioAtual();
+    public static void redirecionaUsuarioLogado(Activity activity) {
+        FirebaseUser user = getUsuarioAtual();
 
-        if (user != null){
+        if (user != null) {
             DatabaseReference usuarioRef = ConfiguracaoFirebase.getFirebaseDatabase()
                     .child("usuarios")
-                    .child(getIdentificadorUsuarioId()) ;
+                    .child(getIdentificadorUsuarioId());
             usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     UsuarioDomain usuarioDomain = snapshot.getValue(UsuarioDomain.class);
                     String tipoUsuario = usuarioDomain != null ? usuarioDomain.getTipo() : null; //Recuperando o tipo do usuario
-                    if (tipoUsuario != null && tipoUsuario.equals("M")){
+                    if (tipoUsuario != null && tipoUsuario.equals("M")) {
                         // Se for um motorista, inicie o fragmento HomeFragment
                         Intent intent = new Intent(activity, RequisicoesActivity.class);
                         activity.startActivity(intent);
-                    }else {
+                    } else {
                         Intent intent = new Intent(activity, PassageiroActivity.class);
                         activity.startActivity(intent);
 
@@ -106,8 +108,30 @@ public class UsuarioFirebase {
         }
     }
 
+
+    public static void atualizarDadosLocalizacao(double lat, double lon) {
+
+        //Define no local_usuario
+        DatabaseReference localUsuario = ConfiguracaoFirebase.getFirebaseDatabase()
+                .child("local_usuario");
+
+        GeoFire geoFire = new GeoFire(localUsuario);
+
+        //Recuperando os dados do usuario logado
+        UsuarioDomain usuarioDomain = UsuarioFirebase.getDadosUsuarioLogado();
+
+        //Configura a localização do usuario
+        geoFire.setLocation(usuarioDomain.getId(),
+                new GeoLocation(lat, lon),
+                (key, error) -> {
+                    if (error != null) {
+                        Log.d("Erro", "Erro ao salvar o local com Geofire");
+                    }
+                });
+    }
+
     //Metodo que retorna o ID direto do Usuario no BD
-    public static String  getIdentificadorUsuarioId(){
-        return  getUsuarioAtual().getUid();
+    public static String getIdentificadorUsuarioId() {
+        return getUsuarioAtual().getUid();
     }
 }
