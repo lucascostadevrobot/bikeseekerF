@@ -257,6 +257,9 @@ public class PassageiroActivity extends AppCompatActivity implements OnMapReadyC
             }
         }else {
            //Cancelar a requisição
+
+
+
             motoboychamado = false;
 
         }

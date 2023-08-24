@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.location.GnssAntennaInfo;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -15,9 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -42,9 +38,7 @@ import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.OnMapsSdkInitializedCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
@@ -54,13 +48,12 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Objects;
 
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
@@ -91,6 +84,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     private FirebaseAuth autenticacao;
     private String satusRequisicao;
     private boolean requisicaoAtiva;
+    private FloatingActionButton floatingActionButton;
 
 
     //Construtor vazio
@@ -105,6 +99,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         botaoAceitarCorridaStatus = (Button) view.findViewById(R.id.botao_aceitarCorrida);
         botaoAceitarCorridaStatus.setOnClickListener(this);
         //botaoAceitarCorridaStatus = requireActivity().findViewById(R.id.botao_aceitarCorrida);
+
+
+
 
         //Verifica se o MapaSuporteManager esta vazio
         if (supportMapFragment == null) {
@@ -122,7 +119,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 });*/
 
             //Instanciando Objetos para Back Botton Fragment
-            Toolbar toolbar = view.findViewById(R.id.toolbarMapaFragmentMotorista);
+            Toolbar toolbar = view.findViewById(R.id.idIniciarRotaMotorista);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 toolbar.setNavigationIcon(R.drawable.baseline_keyboard_backspace_24);
             }
@@ -310,6 +307,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         if (mMap != null) {
             botaoAceitarCorridaStatus.setText("A caminho do passageiro");
 
+
             //Exibe o marcador do motorista
             adicionarMarcadorMotorista(localMotorista, motorista.getNome());
             //Exibe o marcador do passageiro
@@ -334,7 +332,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         Circle circulo = mMap.addCircle(
                 new CircleOptions()
                         .center(localPassageiro)
-                        .radius(300) //em metros
+                        .radius(50) //em metros
                         .fillColor(Color.argb(72,0,40, 100))
                         .strokeColor(Color.argb(5, 61,139, 0))
         );
@@ -348,9 +346,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             public void onKeyEntered(String key, GeoLocation location) {
                 //Verificamos se o motorista entra dentro da area de 80 metros,para isso usamos o metodo onKeyEntered
                 //Para isso precisamos verificar se o Id do motorista está dentro da area. Sabemos que do Motorista já esta
-                if (key.equals(passageiro.getId())){
+                if (key.equals(motorista.getId())){
+                    requisicaoDomain.setStatus(RequisicaoDomain.STATUS_VIAGEM);
+                    requisicaoDomain.atualizaStatusRequisicao();
 
-                }else if (key.equals(motorista.getId())){
+                    geoQuery.removeAllListeners();
+                    circulo.remove();
 
                 }
 

@@ -67,6 +67,18 @@ public class RequisicaoDomain {
 
     }
 
+    public void atualizaStatusRequisicao(){
+        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+        DatabaseReference requisicoes = firebaseRef.child("requisicoes"); //salva a requisicao em no no BD
+        DatabaseReference requisicao = requisicoes.child(getId());
+        //Parte que realiza a atualização na requisicao direto no banco de dados, através do requisicoes e requisicao
+        Map<String, Object> objeto = new HashMap<String, Object>();
+
+        objeto.put("status", getStatus());
+
+        requisicao.updateChildren(objeto);
+    }
+
 
 
 
