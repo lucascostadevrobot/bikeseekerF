@@ -31,6 +31,7 @@ import androidx.lifecycle.viewmodel.CreationExtras;
 
 import com.app.bike.seeke.R;
 import com.app.bike.seeke.databinding.FragmentHomeBinding;
+import com.app.bike.seeke.domain.DestinoDomain;
 import com.app.bike.seeke.domain.RequisicaoDomain;
 import com.app.bike.seeke.domain.UsuarioDomain;
 import com.app.bike.seeke.helper.UsuarioFirebase;
@@ -83,12 +84,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 
     private Marker marcadorMotorista;
     private Marker marcadorPassageiro;
+    private Marker marcadorDestino;
 
     private FirebaseAuth autenticacao;
     private String satusRequisicao;
     private boolean requisicaoAtiva;
 
     private FloatingActionButton floatingActionButton;
+    private DestinoDomain destinoDomain;
 
 
     //Construtor vazio
@@ -122,6 +125,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                             lon = String.valueOf(localPassageiro.longitude);
                             break;
                         case RequisicaoDomain.STATUS_VIAGEM:
+                            lat = destinoDomain.getLatitude();
+                            lon = destinoDomain.getLongitude();
 
                             break;
                     }
@@ -310,6 +315,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 
                     );
                     satusRequisicao = requisicaoDomain.getStatus();
+                    destinoDomain = requisicaoDomain.getDestinoDomain();
                     alteraInterfaceSatusRequisicao(satusRequisicao);
                 }
 
@@ -323,6 +329,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     }
 
     private void alteraInterfaceSatusRequisicao(String status){
+        if (status != null)
         switch (status) {
             case RequisicaoDomain.STATUS_AGUARDANDO:
                 requisicaoAguardando();
@@ -330,6 +337,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 
             case RequisicaoDomain.STATUS_A_CAMINHO:
                 requisicaoACaminho();
+                break;
+
+            case RequisicaoDomain.STATUS_VIAGEM:
+                requisicaoViagem();
                 break;
         }
     }
@@ -363,6 +374,23 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             iniciarMonitoramentoCorrida(passageiro, motorista);
 
 
+        }
+    }
+
+    private void requisicaoViagem(){
+        //alterando a interface
+        if (mMap != null) {
+            floatingActionButton.setVisibility(View.VISIBLE);
+            botaoAceitarCorridaStatus.setText("Estamos a caminho do destino");
+            adicionarMarcadorMotorista(localMotorista, motorista.getNome());
+
+            //Exibindo marcado de destino | criamos um metodo para isso
+            LatLng localDestino = new LatLng(
+                    Double.parseDouble(destinoDomain.getLatitude()),
+                    Double.parseDouble(destinoDomain.getLongitude()));
+
+            adicionarMarcadorDestino(localDestino, "Destino");
+            centralizaDoisMarcadores(marcadorMotorista, marcadorDestino);
         }
     }
 
@@ -437,7 +465,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 
         int largura = getResources().getDisplayMetrics().widthPixels;
         int altura = getResources().getDisplayMetrics().heightPixels;
-        int espacoInterno = (int) (largura * 0.20);
+        int espacoInterno = (int) (largura * 0.40);
 
         mMap.moveCamera(
                 CameraUpdateFactory.newLatLngBounds(bounds, largura, altura, espacoInterno)
@@ -466,6 +494,21 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.usuario))
         );
 
+    }
+
+    private void adicionarMarcadorDestino(LatLng localizacao, String titulo){
+        if (marcadorPassageiro != null)
+            marcadorPassageiro.remove();
+
+        if (marcadorDestino != null)
+            marcadorDestino.remove();
+
+        marcadorDestino = mMap.addMarker(
+                new MarkerOptions()
+                        .position(localizacao)
+                        .title(titulo)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.destino))
+        );
     }
 
     //Metodo responsável quando o Motorista clicar no Botão de aceitar corrida

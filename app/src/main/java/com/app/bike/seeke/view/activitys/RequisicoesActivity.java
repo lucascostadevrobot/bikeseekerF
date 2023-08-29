@@ -99,6 +99,7 @@ public class RequisicoesActivity extends AppCompatActivity {
                     RequisicaoDomain requisicaoDomain = ds.getValue(RequisicaoDomain.class);
                     if ((requisicaoDomain != null && requisicaoDomain.getStatus().equals(RequisicaoDomain.STATUS_A_CAMINHO))
                             || (requisicaoDomain != null && requisicaoDomain.getStatus().equals(RequisicaoDomain.STATUS_VIAGEM))) {
+                        motorista =  requisicaoDomain.getMotorista();
                         abrirTelaCorrida(requisicaoDomain.getId(), motorista, true);
                     }
                 }
@@ -141,6 +142,8 @@ public class RequisicoesActivity extends AppCompatActivity {
                 if (!latitude.isEmpty() && !longitude.isEmpty()) {
                     motorista.setLatitude(latitude);
                     motorista.setLongitude(longitude);
+
+                    adicionEventoCliqueRecycleView();
                     locationManager.removeUpdates(locationListener);
                     requisicoesAdapter.notifyDataSetChanged();
 
@@ -238,7 +241,11 @@ public class RequisicoesActivity extends AppCompatActivity {
         recyclerViewRequisicoes.setLayoutManager(layoutManager);
         recyclerViewRequisicoes.setHasFixedSize(true);
         recyclerViewRequisicoes.setAdapter(requisicoesAdapter);
+        //Metodo recupera requisicoes
+        recuperarRequisicoes();
+    }
 
+    private void adicionEventoCliqueRecycleView(){
         recyclerViewRequisicoes.addOnItemTouchListener(
                 new RecyclerItemClickListener(
                         getApplicationContext(),
@@ -262,10 +269,6 @@ public class RequisicoesActivity extends AppCompatActivity {
                         }
                 )
         );
-
-
-        //Metodo recupera requisicoes
-        recuperarRequisicoes();
     }
 
     private void recuperarRequisicoes() {
