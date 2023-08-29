@@ -142,8 +142,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         //end região [110]
 
 
-
-
         //Região [141] Verificação para saber se o MapaSuporteManager está vazio e inicializa-lo
         if (supportMapFragment == null) {
             FragmentManager fragmentManager = getChildFragmentManager();
@@ -328,21 +326,25 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         });
     }
 
-    private void alteraInterfaceSatusRequisicao(String status){
+    private void alteraInterfaceSatusRequisicao(String status) {
         if (status != null)
-        switch (status) {
-            case RequisicaoDomain.STATUS_AGUARDANDO:
-                requisicaoAguardando();
-                break;
+            switch (status) {
+                case RequisicaoDomain.STATUS_AGUARDANDO:
+                    requisicaoAguardando();
+                    break;
 
-            case RequisicaoDomain.STATUS_A_CAMINHO:
-                requisicaoACaminho();
-                break;
+                case RequisicaoDomain.STATUS_A_CAMINHO:
+                    requisicaoACaminho();
+                    break;
 
-            case RequisicaoDomain.STATUS_VIAGEM:
-                requisicaoViagem();
-                break;
-        }
+                case RequisicaoDomain.STATUS_VIAGEM:
+                    requisicaoViagem();
+                    break;
+
+                case RequisicaoDomain.STATUS_FINALIZADA:
+                    requisicaoFinalizada();
+                    break;
+            }
     }
 
     //Vai alterar o botão aceitar corrida
@@ -351,9 +353,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             botaoAceitarCorridaStatus.setText("Aceitar corrida");
             //Exibe o marcador do motorista
             adicionarMarcadorMotorista(localMotorista, motorista.getNome());
-            mMap.moveCamera(
-                    CameraUpdateFactory.newLatLngZoom(localMotorista, 28)
-            );
+            centralizaUnicoMarcador(localMotorista);
+
         }
     }
 
@@ -377,7 +378,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         }
     }
 
-    private void requisicaoViagem(){
+    private void requisicaoViagem() {
         //alterando a interface
         if (mMap != null) {
             floatingActionButton.setVisibility(View.VISIBLE);
@@ -397,7 +398,35 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         }
     }
 
-    private void iniciarMonitoramento(UsuarioDomain usuarioOrigem, LatLng locaDestino, String status){
+    private void requisicaoFinalizada() {
+        floatingActionButton.setVisibility(View.GONE);
+        if (marcadorMotorista != null)
+            marcadorMotorista.remove();
+
+        if (marcadorDestino != null)
+            marcadorDestino.remove();
+
+        //Exibindo marcador do destino
+        LatLng locaDestino = new LatLng(
+                Double.parseDouble(destinoDomain.getLatitude()),
+                        Double.parseDouble(destinoDomain.getLongitude()));
+        adicionarMarcadorDestino(locaDestino, "Destino" + destinoDomain.getRua());
+        centralizaUnicoMarcador(locaDestino);
+
+        //Exibir aqui o alerta dialog
+        botaoAceitarCorridaStatus.setText("Corrida finaliza - R$20");
+
+    }
+
+    private void centralizaUnicoMarcador(LatLng local){
+        if (mMap != null) {
+            mMap.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(local, 28)
+            );
+        }
+    }
+
+    private void iniciarMonitoramento(UsuarioDomain usuarioOrigem, LatLng locaDestino, String status) {
         //Incializando geofire
         //Define no local_usuario
         DatabaseReference localUsuario = ConfiguracaoFirebase.getFirebaseDatabase()
@@ -408,8 +437,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 new CircleOptions()
                         .center(locaDestino)
                         .radius(50) //em metros
-                        .fillColor(Color.argb(72,0,40, 100))
-                        .strokeColor(Color.argb(5, 61,139, 0))
+                        .fillColor(Color.argb(72, 0, 40, 100))
+                        .strokeColor(Color.argb(5, 61, 139, 0))
         );
 
         GeoQuery geoQuery = geoFire.queryAtLocation(
@@ -421,7 +450,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             public void onKeyEntered(String key, GeoLocation location) {
                 //Verificamos se o motorista entra dentro da area de 80 metros,para isso usamos o metodo onKeyEntered
                 //Para isso precisamos verificar se o Id do motorista está dentro da area. Sabemos que do Motorista já esta
-                if (key.equals(usuarioOrigem.getId())){
+                if (key.equals(usuarioOrigem.getId())) {
                     requisicaoDomain.setStatus(status);
                     requisicaoDomain.atualizaStatusRequisicao();
 
@@ -431,6 +460,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 }
 
             }
+
             @Override
             public void onKeyExited(String key) {
 
@@ -499,19 +529,21 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 
     }
 
-    private void adicionarMarcadorDestino(LatLng localizacao, String titulo){
-        if (marcadorPassageiro != null)
-            marcadorPassageiro.remove();
+    private void adicionarMarcadorDestino(LatLng localizacao, String titulo) {
+        if (mMap != null) {
+            if (marcadorPassageiro != null)
+                marcadorPassageiro.remove();
 
-        if (marcadorDestino != null)
-            marcadorDestino.remove();
+            if (marcadorDestino != null)
+                marcadorDestino.remove();
 
-        marcadorDestino = mMap.addMarker(
-                new MarkerOptions()
-                        .position(localizacao)
-                        .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.destino))
-        );
+            marcadorDestino = mMap.addMarker(
+                    new MarkerOptions()
+                            .position(localizacao)
+                            .title(titulo)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.destino))
+            );
+        }
     }
 
     //Metodo responsável quando o Motorista clicar no Botão de aceitar corrida

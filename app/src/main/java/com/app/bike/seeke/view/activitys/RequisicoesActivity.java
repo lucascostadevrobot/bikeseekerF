@@ -98,7 +98,8 @@ public class RequisicoesActivity extends AppCompatActivity {
                 for (DataSnapshot ds : snapshot.getChildren()) { //ALTEREI AQUI TRATANDO  NULABILIDADE
                     RequisicaoDomain requisicaoDomain = ds.getValue(RequisicaoDomain.class);
                     if ((requisicaoDomain != null && requisicaoDomain.getStatus().equals(RequisicaoDomain.STATUS_A_CAMINHO))
-                            || (requisicaoDomain != null && requisicaoDomain.getStatus().equals(RequisicaoDomain.STATUS_VIAGEM))) {
+                            || (requisicaoDomain != null && requisicaoDomain.getStatus().equals(RequisicaoDomain.STATUS_VIAGEM))
+                            || (requisicaoDomain != null && requisicaoDomain.getStatus().equals(RequisicaoDomain.STATUS_FINALIZADA))) {
                         motorista =  requisicaoDomain.getMotorista();
                         abrirTelaCorrida(requisicaoDomain.getId(), motorista, true);
                     }
