@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -23,6 +24,7 @@ import android.widget.Button;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -36,6 +38,7 @@ import com.app.bike.seeke.domain.RequisicaoDomain;
 import com.app.bike.seeke.domain.UsuarioDomain;
 import com.app.bike.seeke.helper.UsuarioFirebase;
 import com.app.bike.seeke.repository.ConfiguracaoFirebase;
+import com.app.bike.seeke.view.activitys.PassageiroActivity;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
@@ -58,6 +61,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
@@ -412,9 +417,29 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                         Double.parseDouble(destinoDomain.getLongitude()));
         adicionarMarcadorDestino(locaDestino, "Destino" + destinoDomain.getRua());
         centralizaUnicoMarcador(locaDestino);
-
+        botaoAceitarCorridaStatus.setText("Corrida finalizada! Receber dinheiro.");
         //Exibir aqui o alerta dialog
-        botaoAceitarCorridaStatus.setText("Corrida finaliza - R$20");
+       botaoAceitarCorridaStatus.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               mostraAlertaPrecoCorrida();
+           }
+       });
+    }
+
+    private void mostraAlertaPrecoCorrida(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        builder.setTitle("Sua corrida foi finalizada!");
+        builder.setMessage("Preço final: R$20");
+        builder.setPositiveButton("Recebido", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                botaoAceitarCorridaStatus.setText("Dindim na conta!");
+            }
+        });
+        builder.show();
+
 
     }
 
