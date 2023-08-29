@@ -3,13 +3,16 @@ package com.app.bike.seeke.view.activitys.ui.home;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -84,6 +87,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     private FirebaseAuth autenticacao;
     private String satusRequisicao;
     private boolean requisicaoAtiva;
+
     private FloatingActionButton floatingActionButton;
 
 
@@ -91,19 +95,51 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     public HomeFragment() {
     }
 
+    @SuppressLint("CutPasteId")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
+
         botaoAceitarCorridaStatus = (Button) view.findViewById(R.id.botao_aceitarCorrida);
         botaoAceitarCorridaStatus.setOnClickListener(this);
-        //botaoAceitarCorridaStatus = requireActivity().findViewById(R.id.botao_aceitarCorrida);
+        //botaoAceitarCorridaStatus = requireActivity().findViewById(R.id.botao_aceitarCorrida)
+
+
+        /*Região [110] do Iniciar rotas Mototaxtista*/
+        floatingActionButton = view.findViewById(R.id.idIniciarRotaMotorista);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String status = satusRequisicao;
+                if (status != null && !status.isEmpty()) {
+                    String lat = "";
+                    String lon = "";
+                    switch (status) {
+                        case RequisicaoDomain.STATUS_A_CAMINHO:
+                            lat = String.valueOf(localPassageiro.latitude);
+                            lon = String.valueOf(localPassageiro.longitude);
+                            break;
+                        case RequisicaoDomain.STATUS_VIAGEM:
+
+                            break;
+                    }
+                    //Abrindo a rota através do botão floating
+                    String latlong = lat + "," + lon;
+                    Uri uri = Uri.parse("google.navigation:q=" + latlong + "&mode=l");
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    intent.setPackage("com.google.android.apps.maps");
+                    startActivity(intent);
+                }
+            }
+        });
+        //end região [110]
 
 
 
 
-        //Verifica se o MapaSuporteManager esta vazio
+        //Região [141] Verificação para saber se o MapaSuporteManager está vazio e inicializa-lo
         if (supportMapFragment == null) {
             FragmentManager fragmentManager = getChildFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -132,8 +168,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 });
             }
         }
-        //Recuperando os dados dos usuários passageiros na lista de requisicoes
-        //Esse if é necessário para alterarmos e trabalharmos com alteração do status da requisicao
+        //End região [141]
+
+        //Região [173] Recuperando os dados dos usuários passageiros na lista requisicao
+        /**
+         * Esse if é necessário para alterarmos e trabalharmos com alteração do status da requisicao
+         * */
         if (requireActivity().getIntent().getExtras().containsKey("idRequisicao")
                 && requireActivity().getIntent().getExtras().containsKey("motorista")) {
             Bundle extras = requireActivity().getIntent().getExtras();
@@ -147,8 +187,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 idRequisicao = extras.getString("idRequisicao");
                 requisicaoAtiva = extras.getBoolean("requisicaoAtiva");
                 verificaStatusRequisicaoUi();
+
             }
         }
+        //End região [173]
+
 
         supportMapFragment.getMapAsync(this);
         return view;
@@ -306,6 +349,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     private void requisicaoACaminho() {
         if (mMap != null) {
             botaoAceitarCorridaStatus.setText("A caminho do passageiro");
+            floatingActionButton.setVisibility(View.VISIBLE);
 
 
             //Exibe o marcador do motorista
@@ -439,6 +483,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     public void onClick(View view) {
         aceitarCorrida(view);
     }
+
 
     //Metodos Ciclo de vida do Framgmento
     @Override
