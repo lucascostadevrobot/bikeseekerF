@@ -371,7 +371,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             centralizaDoisMarcadores(marcadorMotorista, marcadorPassageiro);
 
             //Inicia o monitoramento do motorista / passageiro
-            iniciarMonitoramentoCorrida(passageiro, motorista);
+            iniciarMonitoramento(motorista, localPassageiro, RequisicaoDomain.STATUS_VIAGEM);
 
 
         }
@@ -391,10 +391,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 
             adicionarMarcadorDestino(localDestino, "Destino");
             centralizaDoisMarcadores(marcadorMotorista, marcadorDestino);
+            //Inicia o monitoramento do motorista / passageiro
+            iniciarMonitoramento(motorista, localDestino, RequisicaoDomain.STATUS_FINALIZADA);
+
         }
     }
 
-    private void iniciarMonitoramentoCorrida(UsuarioDomain p, UsuarioDomain m){
+    private void iniciarMonitoramento(UsuarioDomain usuarioOrigem, LatLng locaDestino, String status){
         //Incializando geofire
         //Define no local_usuario
         DatabaseReference localUsuario = ConfiguracaoFirebase.getFirebaseDatabase()
@@ -403,14 +406,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         //Adiciona circulo no passageiro
         Circle circulo = mMap.addCircle(
                 new CircleOptions()
-                        .center(localPassageiro)
+                        .center(locaDestino)
                         .radius(50) //em metros
                         .fillColor(Color.argb(72,0,40, 100))
                         .strokeColor(Color.argb(5, 61,139, 0))
         );
 
         GeoQuery geoQuery = geoFire.queryAtLocation(
-                new GeoLocation(localPassageiro.latitude, localPassageiro.longitude),
+                new GeoLocation(locaDestino.latitude, locaDestino.longitude),
                 0.08 //em km (0.05 80 metros, 0.8 equivale a 800 metros)
         );
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
@@ -418,8 +421,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             public void onKeyEntered(String key, GeoLocation location) {
                 //Verificamos se o motorista entra dentro da area de 80 metros,para isso usamos o metodo onKeyEntered
                 //Para isso precisamos verificar se o Id do motorista está dentro da area. Sabemos que do Motorista já esta
-                if (key.equals(motorista.getId())){
-                    requisicaoDomain.setStatus(RequisicaoDomain.STATUS_VIAGEM);
+                if (key.equals(usuarioOrigem.getId())){
+                    requisicaoDomain.setStatus(status);
                     requisicaoDomain.atualizaStatusRequisicao();
 
                     geoQuery.removeAllListeners();
