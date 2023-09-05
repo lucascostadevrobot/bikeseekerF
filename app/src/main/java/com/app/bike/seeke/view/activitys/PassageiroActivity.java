@@ -93,6 +93,8 @@ public class PassageiroActivity extends AppCompatActivity implements OnMapReadyC
 
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,83 +187,65 @@ public class PassageiroActivity extends AppCompatActivity implements OnMapReadyC
 
 
     //Metodo que recebe a requisição do botão chamarBikeSeeker para chamar um motoboy
+    @SuppressLint("SetTextI18n")
     public void chamarBikeSeeker(View view) {
-        //Defindindo um alertDialog atributo global
-        final DestinoDomain destinoDomain = new DestinoDomain();
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(PassageiroActivity.this);
         String enderecoDestino = editMeuDestino.getText().toString();
         Address addressDestino = recuperarEnderecoDestino(enderecoDestino);
 
-        if(!motoboychamado){
-            //Inicio do Iff principal chamaBikeSeeker e chama metodo salvarRequisicao
+        if (!motoboychamado) {
             if (addressDestino != null) {
-                destinoDomain.setCidade(addressDestino.getAdminArea());
+                // Crie a instância do DestinoDomain dentro do escopo do AlertDialog
+                final DestinoDomain destinoDomain = new DestinoDomain();
+                destinoDomain.setCidade(addressDestino.getLocality());
                 destinoDomain.setCep(addressDestino.getPostalCode());
                 destinoDomain.setBairro(addressDestino.getSubLocality());
-                destinoDomain.setBairro(addressDestino.getThoroughfare());
+                destinoDomain.setRua(addressDestino.getThoroughfare());
                 destinoDomain.setNumero(addressDestino.getFeatureName());
                 destinoDomain.setLatitude(String.valueOf(addressDestino.getLatitude()));
                 destinoDomain.setLongitude(String.valueOf(addressDestino.getLongitude()));
 
-                StringBuilder mensagemEnderecoDoAlert = new StringBuilder();
-                mensagemEnderecoDoAlert.append("Cidade:" + destinoDomain.getCidade());
-                mensagemEnderecoDoAlert.append("Rua:" + destinoDomain.getRua());
-                mensagemEnderecoDoAlert.append("Bairro:" + destinoDomain.getBairro());
-                mensagemEnderecoDoAlert.append("Número:" + destinoDomain.getNumero());
-                mensagemEnderecoDoAlert.append("Cep:" + destinoDomain.getCep());
-
-                //Inicializando componentes AlertPersoanlizado XML
+                // Resto do seu código para o AlertDialog
                 View alertDialogoPersonalizado = LayoutInflater.from(PassageiroActivity.this).inflate(R.layout.dialog_personalizado, null);
-                TextView atributoenderecoCidade = (TextView) alertDialogoPersonalizado.findViewById(R.id.idCidade);
-                cancelaButton = (ImageButton) alertDialogoPersonalizado.findViewById(R.id.chamarUberId_cancela);
-                confirmaButton = (Button) alertDialogoPersonalizado.findViewById(R.id.botaoConfirmaCorrida);
+                atributoenderecoCidade = alertDialogoPersonalizado.findViewById(R.id.idCidade);
+                cancelaButton = alertDialogoPersonalizado.findViewById(R.id.chamarUberId_cancela);
+                confirmaButton = alertDialogoPersonalizado.findViewById(R.id.botaoConfirmaCorrida);
 
-                //Criando metodo para definir o AlertDialog padrão transparente através de um ID Button
-                //Metodo para popular o AlertDialog personalizado
+                // Atualize o texto no AlertDialog com o novo endereço
+                atributoenderecoCidade.setText("Cidade: " + destinoDomain.getCidade());
+
                 alertDialog.setView(alertDialogoPersonalizado);
-                atributoenderecoCidade.append(destinoDomain.getCidade());
+
+
                 final AlertDialog dialogo = alertDialog.create();
-                findViewById(R.id.botao_chamarmotoboy).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialogo.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                        dialogo.show();
-                        //Declarando e inicializando Dialog Local para metodo cancelButton e confirmButton
-                        //AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                findViewById(R.id.botao_chamarmotoboy).setOnClickListener(v -> {
+                    dialogo.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialogo.show();
+                    cancelaButton.setOnClickListener(v12 -> {
+                        // Limpar os dados da classe destinoDomain
+                        destinoDomain.setCidade(null);
+                        destinoDomain.setCep(null);
+                        destinoDomain.setBairro(null);
+                        destinoDomain.setRua(null);
+                        destinoDomain.setNumero(null);
+                        destinoDomain.setLatitude(null);
+                        destinoDomain.setLongitude(null);
 
-                        //final AlertDialog dialogo = alertDialog.create();
+                        dialogo.dismiss();
+                    });
 
-                        // AlertDialog dialog = builder.create();
-                        cancelaButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogo.cancel();
-                                // Criar uma rotina para fechar o dialog pelo icone X isFinishing();
-                            }
-                        });
+                    confirmaButton.setOnClickListener(v1 -> {
+                        salvarRequisicao(destinoDomain);
+                        motoboychamado = true;
+                        Toast.makeText(PassageiroActivity.this, "Obrigado por solicitar", Toast.LENGTH_SHORT).show();
 
 
-                        confirmaButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                //dialog.cancel();
-                                salvarRequisicao(destinoDomain);
-                                motoboychamado = true;
-                                Toast.makeText(PassageiroActivity.this, "Obrigado por solicitar", Toast.LENGTH_SHORT).show();
-                                dialogo.show();
-
-                            }
-                        });
-                    }
+                        dialogo.dismiss();
+                    });
                 });
             }
-        }else {
-           //Cancelar a requisição
-
-
-
+        } else {
             motoboychamado = false;
-
         }
     }
     //Fim do metodo chamar bikeSeeker
@@ -284,16 +268,14 @@ public class PassageiroActivity extends AppCompatActivity implements OnMapReadyC
         botaoChamarMotoBoyBikeSeeker.setText("Cancelar motoboy");
     }
 
-    //Metodo para recuperar o Endereço de Destino para onde o usuário quer ir
+    /// Método para recuperar o Endereço de Destino para onde o usuário quer ir
     public Address recuperarEnderecoDestino(String endereco) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {
-            List<Address> listaDeEnderecos = geocoder.getFromLocationName(endereco, 100);
-            if (listaDeEnderecos != null && listaDeEnderecos.size() > 0) {
-                Address address = listaDeEnderecos.get(0);
-                String subAdminArea = address.getSubAdminArea();
 
-                return address;
+            List<Address> listaDeEnderecos = geocoder.getFromLocationName(endereco, 1); // Alterado para 1 para recuperar apenas um endereço
+            if (listaDeEnderecos != null && listaDeEnderecos.size() > 0) {
+                return listaDeEnderecos.get(0);
             }
         } catch (IOException e) {
             e.printStackTrace();
