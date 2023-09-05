@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_nome_completo"
                 android:inputType="text"
-                android:textColorHint="#546E7A"
+                android:textColorHint="#161717"
                 tools:ignore="TextContrastCheck" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_digite_seu_email"
                     android:inputType="textEmailAddress"
-                    android:textColorHint="#546E7A"
+                    android:textColorHint="#030304"
                     tools:ignore="TextContrastCheck" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/hint_digite_sua_senha_cadastro"
                         android:inputType="textPassword"
-                        android:textColorHint="#546E7A"
+                        android:textColorHint="#000000"
                         tools:ignore="TextContrastCheck" />
                 </com.google.android.material.textfield.TextInputLayout>
             </com.google.android.material.textfield.TextInputLayout>

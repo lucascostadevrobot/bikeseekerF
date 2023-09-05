@@ -211,11 +211,9 @@ public class PassageiroActivity extends AppCompatActivity implements OnMapReadyC
                 cancelaButton = alertDialogoPersonalizado.findViewById(R.id.chamarUberId_cancela);
                 confirmaButton = alertDialogoPersonalizado.findViewById(R.id.botaoConfirmaCorrida);
 
-                // Atualize o texto no AlertDialog com o novo endereço
-                atributoenderecoCidade.setText("Cidade: " + destinoDomain.getCidade());
-
                 alertDialog.setView(alertDialogoPersonalizado);
 
+                atributoenderecoCidade.setText("Cidade: " + destinoDomain.getCidade());
 
                 final AlertDialog dialogo = alertDialog.create();
                 findViewById(R.id.botao_chamarmotoboy).setOnClickListener(v -> {
@@ -238,7 +236,6 @@ public class PassageiroActivity extends AppCompatActivity implements OnMapReadyC
                         salvarRequisicao(destinoDomain);
                         motoboychamado = true;
                         Toast.makeText(PassageiroActivity.this, "Obrigado por solicitar", Toast.LENGTH_SHORT).show();
-
 
                         dialogo.dismiss();
                     });

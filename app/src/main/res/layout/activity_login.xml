@@ -75,7 +75,7 @@
                 android:background="#FFFFFF"
                 android:maxLength="200"
                 android:singleLine="false"
-                android:textColorHint="#00FFFFFF"
+                android:textColorHint="@color/black"
                 tools:ignore="DuplicateSpeakableTextCheck" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -106,7 +106,7 @@
                     android:inputType="textPassword"
                     android:maxLength="200"
                     android:singleLine="false"
-                    android:textColorHint="#00FFFFFF"
+                    android:textColorHint="@color/black"
                     tools:ignore="DuplicateSpeakableTextCheck,TextContrastCheck" />
             </com.google.android.material.textfield.TextInputLayout>
         </com.google.android.material.textfield.TextInputLayout>
