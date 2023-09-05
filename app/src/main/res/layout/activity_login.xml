@@ -39,7 +39,7 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="359dp"
-        android:layout_height="203dp"
+        android:layout_height="253dp"
         android:background="@drawable/linear_layout_circular_secundario"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -52,27 +52,28 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="338dp"
-            android:layout_height="152dp"
+            android:layout_height="172dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="10dp"
             android:hint="E-mail"
             app:boxStrokeColor="#00FFFFFF"
             app:counterEnabled="true"
-            app:counterMaxLength="20"
+            app:counterMaxLength="60"
             app:endIconMode="clear_text"
             app:helperText="Required"
             app:helperTextTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:startIconDrawable="@drawable/ic_baseline_account_box_24">
+            app:startIconDrawable="@drawable/ic_baseline_account_box_24"
+            tools:ignore="HardcodedText">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editLoginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#FFFFFF"
-                android:maxLength="30"
+                android:maxLength="200"
                 android:singleLine="false"
                 android:textColorHint="#00FFFFFF"
                 tools:ignore="DuplicateSpeakableTextCheck" />
@@ -103,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:background="#FFFFFF"
                     android:inputType="textPassword"
-                    android:maxLength="30"
+                    android:maxLength="200"
                     android:singleLine="false"
                     android:textColorHint="#00FFFFFF"
                     tools:ignore="DuplicateSpeakableTextCheck,TextContrastCheck" />
